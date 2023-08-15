@@ -24,8 +24,8 @@ def player(prev_play, opponent_history=[], my_history=[]):
     if not len(my_history):
       guess = "R"
     else:
-      guess = ideal_response[my_history[
-        -1]]  #sequence of RPS. This does not work at all and is a placeholder.
+      guess = ["R", "R", "P", "P",
+               "S"][len(my_history) % 5]  #This technically works???
 
   #Strategy "Quincy": Quincy guesses in sequence of RRPPSRRPPS
   elif target == "quincy":
