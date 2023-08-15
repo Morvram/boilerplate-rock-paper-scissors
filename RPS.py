@@ -24,7 +24,20 @@ def player(prev_play, opponent_history=[], my_history=[]):
     if not len(my_history):
       guess = "R"
     else:
-      guess = ideal_response[my_history[-1]]  #sequence of RPS
+      guess = ideal_response[my_history[
+        -1]]  #sequence of RPS. This does not work at all and is a placeholder.
+
+  #Strategy "Quincy": Quincy guesses in sequence of RRPPSRRPPS
+  elif target == "quincy":
+    if len(opponent_history
+           ) < 1 or opponent_history[-1] == "S" or opponent_history[-2:] == [
+             "S", "R"
+           ]:
+      guess = "P"
+    elif opponent_history[-2:] in [["R", "R"], ["R", "P"]]:
+      guess = "S"
+    else:
+      guess = "R"
 
   my_history.append(guess)
   return guess
@@ -47,5 +60,12 @@ def guess_opponent(opponent_history, my_history):
         break
       else:
         return "kris"
+
+  if opponent_history[-5:] in [["R", "R", "P", "P", "S"],
+                               ["R", "P", "P", "S", "R"],
+                               ["P", "P", "S", "R", "R"],
+                               ["S", "R", "R", "P", "P"],
+                               ["P", "S", "R", "R", "P"]]:
+    return "quincy"
 
   return "abbey"
