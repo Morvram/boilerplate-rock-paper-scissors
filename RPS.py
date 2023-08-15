@@ -19,7 +19,7 @@ def player(prev_play, opponent_history=[], my_history=[]):
     guess = ideal_response[ideal_response[
       my_history[-1]]]  #Ideal response to the ideal response to my last guess.
 
-  #Strategy "Abbey": Abbey is using a markov matrix to predict what I will follow each move with.
+  #TODO Strategy "Abbey": Abbey is using a markov matrix to predict what I will follow each move with.
   elif target == "abbey":
     if not len(my_history):
       guess = "R"
@@ -38,6 +38,16 @@ def player(prev_play, opponent_history=[], my_history=[]):
       guess = "S"
     else:
       guess = "R"
+
+  #todo strategy "Mrugesh": It responds to my most common move out of the last ten moves.
+  elif target == "mrugesh":
+    last_ten = my_history[-10:]
+    most_frequent = max(set(last_ten), key=last_ten.count)
+
+    if most_frequent == "":
+      guess = "R"
+    else:
+      guess = ideal_response[ideal_response[most_frequent]]
 
   my_history.append(guess)
   return guess
@@ -67,5 +77,9 @@ def guess_opponent(opponent_history, my_history):
                                ["S", "R", "R", "P", "P"],
                                ["P", "S", "R", "R", "P"]]:
     return "quincy"
+
+  if len(opponent_history) > 10 and opponent_history[-1] == ideal_response[max(
+      set(my_history[-10:]), key=my_history[-10:].count)]:
+    return "mrugesh"
 
   return "abbey"
